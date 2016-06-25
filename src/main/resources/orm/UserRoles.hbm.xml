@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.connectis.model.UserRole" table="ROLES_MEDAS"
+		catalog="system">
+
+		<id name="userRoleId" type="java.lang.Integer">
+			<column name="ID" />
+			<generator class="identity" />
+		</id>
+
+		<property name="usuario" type="string">
+			<column name="usuario" length="45" not-null="true" />
+		</property>
+		<property name="role" type="string">
+			<column name="ROLE" length="45" not-null="true" />
+		</property>
+	</class>
+
+</hibernate-mapping>

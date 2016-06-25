@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.connectis.model.UsuariosEnvio" table="USUARIOS_ENVIO" catalog="system">
+
+		<id name="id" type="string">
+			<column name="id" length="45" />
+			<generator class="assigned" />
+		</id>
+
+		<property name="nombre" type="string">
+			<column name="nombre" not-null="true" />
+		</property>
+
+		<property name="correo" type="string">
+			<column name="correo" not-null="true" />
+		</property>
+
+		<property name="telefono" type="string">
+			<column name="telefono" not-null="true" />
+		</property>
+		
+		<property name="soporte" type="string">
+			<column name="soporte" not-null="true" />
+		</property>
+		
+
+      <set name="UsuariosEnvio" cascade="save-update" table="USUARIOS_APLICACIONES">
+         <key column="ID_USUARIO"/>
+         <many-to-many column="ID_APLICATIVO" class="com.connectis.model.Aplicaciones"/>
+      </set>
+
+	</class>
+</hibernate-mapping>

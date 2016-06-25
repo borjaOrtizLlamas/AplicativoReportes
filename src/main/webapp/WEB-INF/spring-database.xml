@@ -1,0 +1,125 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/web-services
+	http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+	http://www.springframework.org/schema/oxm 
+	http://www.springframework.org/schema/oxm/spring-oxm-1.5.xsd
+    ">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>oracle.jdbc.driver.OracleDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:oracle:thin:@127.0.0.1:1521</value>
+		</property>
+		<property name="username">
+			<value>system</value>
+		</property>
+		<property name="password">
+			<value>manager</value>
+		</property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>orm/UsuariosEnvio.hbm.xml</value>
+				<value>orm/Aplicaciones.hbm.xml</value>
+				<value>orm/UsuariosMedas.hbm.xml</value>
+				<value>orm/UserRoles.hbm.xml</value>
+				<value>orm/Peticiones.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+   <tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="userServicePointCut"
+			expression="execution(* com.company.service*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="userServicePointCut" />
+	</aop:config>
+
+
+	<!-- _____________________________________________beans______________________________________  -->
+
+	<bean id="aplicacionesDao" class="com.connectis.dao.AplicacionesDAO" >
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="servicioAplicaciones" class="com.connectis.services.ServicioAplicaciones" >
+		<property name="aplicacionesDao" ref="aplicacionesDao"></property>
+	</bean>
+	
+	<bean id="usuariosMedasDAO" class="com.connectis.dao.UsuariosMedasDAOImpl" >
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="generaArchivoWorld" class="com.connectis.services.GeneraArchivoWord" >
+		<property name="usuariosMedasDAO" ref="usuariosMedasDAO"></property>
+		<property name="aplicacionesDAO" ref="aplicacionesDao"></property>
+	</bean>
+	
+	
+	<bean id="javaMail" class="com.connectis.services.JavaMail" >
+		<property name="usuariosMedasDAO" ref="usuariosMedasDAO"></property>
+		<property name="aplicacionesDAO" ref="aplicacionesDao"></property>
+		<property name="incidenciasServicio" ref="incidenciasServicio"></property>
+	</bean>
+	
+
+	<bean id="myUserDetailsService" class="com.connectis.services.ServicioUsuarios" >
+		<property name="userDao" ref="usuariosMedasDAO"></property>
+	</bean>
+	
+	<alias name="myUserDetailsService" alias="usuariosServicio"/>
+	
+	<bean id="servicioLogeo" class="com.connectis.services.ServicioLogeo" >
+		<property name="myUserDetailsService" ref="myUserDetailsService" />
+	</bean>
+	
+	
+	<bean id="incidenciasDAO" class="com.connectis.dao.IncidenciasDAOImpl" >
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="incidenciasServicio" class="com.connectis.services.IncidenciasServicio">
+		<property name="incidenciasDAOImpl" ref="incidenciasDAO" />
+		<property name="servicioAplicaciones" ref="servicioAplicaciones"></property>
+		<property name="generaArchivoWorld" ref="generaArchivoWorld"></property>
+	</bean>
+	
+</beans>

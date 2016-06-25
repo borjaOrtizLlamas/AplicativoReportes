@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.connectis.model.Aplicaciones" table="APLICACIONES" catalog="system">
+
+		<id name="id" type="int">
+			<column name="id" length="45" />
+			<generator class="assigned" />
+		</id>
+
+		<property name="nombre" type="string">
+			<column name="nombre_aplicacion" not-null="true" />
+		</property>
+		
+		<property name="funcional" type="string">
+			<column name="funcional" not-null="true" />
+		</property>
+		
+		<property name="windows" type="int">
+			<column name="windows" not-null="true" />
+		</property>
+		<property name="emailFuncional" type="string">
+			<column name="email_funcional" not-null="true" />
+		</property>
+
+	</class>
+</hibernate-mapping>
+

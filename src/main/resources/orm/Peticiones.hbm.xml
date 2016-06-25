@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class catalog="system" name="com.connectis.model.Peticiones"
+		table="INCIDENCIAS">
+		<id name="id" type="int">
+			<column length="45" name="id" />
+			<generator class="increment" />
+		</id>
+
+		<many-to-one class="com.connectis.model.UsuariosMedas" 	fetch="select" name="usuario" lazy="false">
+			<column name="usuario" not-null="false" />
+		</many-to-one>
+
+		<property name="codigoUnicenter" type="string">
+			<column name="codigo_unicenter" not-null="false" />
+		</property>
+
+		<property name="estado" type="int">
+			<column name="estado" not-null="false" />
+		</property>
+
+		<property name="correosEnvio" type="string">
+			<column name="correos_envio" not-null="false" />
+		</property>
+
+		<property name="correosEnCopiaEnvio" type="string">
+			<column name="correos_copia" not-null="false" />
+		</property>
+		
+		<property name="autorizacionFuncional" type="string">
+			<column name="autorizacion_Funcional" not-null="false" />
+		</property>
+
+		<property name="entorno" type="string">
+			<column name="entorno" not-null="false" />
+		</property>
+		<property name="fecha" type="string">
+			<column name="fecha" not-null="false" />
+		</property>
+		<property name="bbdd1" type="int">
+			<!-- error -->
+			<column name="bbdd" not-null="false" />
+		</property>
+
+		<property name="urgente1" type="int">
+			<!-- error -->
+			<column name="urgente" not-null="false" />
+		</property>
+
+		<property name="AplicacionIN1" type="int">
+			<!-- error -->
+			<column name="aplicativo" not-null="false" />
+		</property>
+		
+		
+		<property name="aplicacion" type="string" >
+			<column name="nombre_aplicacion" not-null="false" />
+		</property>
+		
+		<property name="descripccion" type="string">
+			<column name="descripccion" not-null="false" />
+		</property>
+		<property name="documentacion" type="string">
+			<column name="documentacion" not-null="false" />
+		</property>
+		<property name="motivo" type="string">
+			<column name="motivo" not-null="false" />
+		</property>
+		<property name="requiereParada" type="string">
+			<column name="REQUIEREPARADA1" not-null="false" />
+		</property>
+		<property name="descripcionDOC" type="string">
+			<column name="descripcion_doc" not-null="false" />
+		</property>
+		<property name="relaseNotes" type="string">
+			<column name="relase_notes" not-null="false" />
+		</property>
+		<property name="autorizador" type="string">
+			<column name="autorizador" not-null="false" />
+		</property>
+		<property name="correoAutorizador" type="string">
+			<column name="correo_autorizador" not-null="false" />
+		</property>
+		<property name="revisada" type="int">
+			<column name="revisada" not-null="false" />
+		</property>
+		<property name="asunto" type="string">
+			<column name="asunto" not-null="false" />
+		</property>
+		<property name="fechaCreacionIncidencia" type="string">
+			<column name="FECHA_CREACION_INCIDENCIA" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>
